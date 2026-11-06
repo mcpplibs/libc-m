@@ -1,0 +1,4 @@
+[template]
+description  = "The C library with import mcpplibs.mwrap.libc: C stdio on stdout() and stderr(), errno() and strerror, and the limits of ISO C"
+default      = true
+post_message = "Run `mcpp run`, or `mcpp run -- <file>` to count the lines of a file with C stdio."

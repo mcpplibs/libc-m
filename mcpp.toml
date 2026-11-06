@@ -1,0 +1,36 @@
+# Module wrapper; upstream API preserved. Policy: mcpp-index/docs/mwrap.md.
+# The upstream is the ISO C standard; the implementation is the target's C library.
+[package]
+namespace   = "mcpplibs.mwrap"
+name        = "libc"
+version     = "17.0.0"
+description = "The C standard library (ISO C17) as C++ modules for mcpp (import mcpplibs.mwrap.libc;): std.compat with the object-like macros of ISO C (stdout, errno, EOF, BUFSIZ, INT_MAX …) as C++ constants and functions, over the target's C library"
+license     = "Apache-2.0"
+authors     = ["mcpp-community"]
+repo        = "https://github.com/mcpplibs/libc-m"
+platforms   = ["linux", "macos", "windows"]
+
+[targets.libc]
+kind = "lib"
+
+[build]
+sources      = ["src/*.cppm"]
+# <mwrap/libc/macros.hpp>: assert, va_*, offsetof, setjmp, INTn_C.
+include_dirs = ["include"]
+
+[test]
+discover = ["tests/*.cpp"]
+
+[package.metadata.mwrap]
+upstream-version = "17.0.0"
+# ISO/IEC 9899:2018 (C17), which C++23 references normatively ([intro.refs]).
+standard         = "ISO/IEC 9899:2018"
+implementation   = "the target's C library"
+
+[[runtime.deploy]]
+from = "LICENSE"
+to   = "licenses/libc"
+
+[[runtime.deploy]]
+from = "NOTICE"
+to   = "licenses/libc"

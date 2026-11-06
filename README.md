@@ -65,9 +65,9 @@ target leaves out (`FP_FAST_FMA` where `fma` is not fast) is not mapped there.
 POSIX names that ISO C does not have (`ENOENT`, `EACCES` …) are not mapped:
 `std::errc` gives them portably. `NULL` is `nullptr`. The function-like macros
 that no function can replace stay macros in `<mwrap/libc/macros.hpp>`, which
-includes the five headers that define them; in a unit that includes it, the
-object-like macros of those headers (`SIZE_MAX` …) are active and are used as
-macros ([docs/usage.md](docs/usage.md)).
+includes the five headers that define them and then undefines every
+object-like macro of ISO C, so the mapped names work in that unit on every C
+library ([docs/usage.md](docs/usage.md)).
 
 ## Build and testing
 

@@ -1,0 +1,26 @@
+// {{project.name}}: the C standard library through import mcpplibs.mwrap.libc.
+// std.compat gives the functions; the macros of ISO C are in
+// mcpplibs::mwrap::libc::macros: stdout() and stderr() are the streams, errno()
+// the error number, EOF and the limits constants.
+import mcpplibs.mwrap.libc;
+
+namespace c = mcpplibs::mwrap::libc::macros;
+
+int main(int argc, char** argv)
+{
+    const char* path = argc > 1 ? argv[1] : "no-such-file.txt";
+    c::errno() = 0;
+    std::FILE* file = std::fopen(path, "r");
+    if (!file) {
+        // The C library's message for the error it recorded.
+        std::fprintf(c::stderr(), "%s: %s (errno %d)\n", path, std::strerror(c::errno()), c::errno());
+    } else {
+        long lines = 0;
+        for (int ch; (ch = std::fgetc(file)) != c::EOF;) lines += ch == '\n';
+        std::fclose(file);
+        std::fprintf(c::stdout(), "%s: %ld lines\n", path, lines);
+    }
+    std::fprintf(c::stdout(), "CHAR_BIT %d, INT_MAX %d, BUFSIZ %d, RAND_MAX %d\n",
+                 c::CHAR_BIT, c::INT_MAX, int(c::BUFSIZ), c::RAND_MAX);
+    return c::EXIT_SUCCESS;
+}
