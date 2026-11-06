@@ -57,10 +57,17 @@ equal, and `errno()` and the streams the same objects.
 must be macros by the standard. `<mwrap/libc/macros.hpp>` includes the five
 headers that define them (`<assert.h>`, `<setjmp.h>`, `<stdarg.h>`,
 `<stddef.h>`, `<stdint.h>`), so they are the C library's own. Include it before
-the import. Those headers also define object-like macros (`NULL`, `SIZE_MAX`,
-`INT64_MAX` …); a macro expands even inside a qualified name, so in such a unit
-write `SIZE_MAX`, not `mcpplibs::mwrap::libc::macros::SIZE_MAX`. The same holds
-in a unit that includes any C header beside the module (tests/header_mix_test.cpp).
+the import. Those headers also define object-like macros, and which ones
+differs between C libraries: the Windows CRT's `<stddef.h>` defines `errno`,
+and macOS's headers bring `MB_CUR_MAX` and `NAN`. A macro expands even inside a
+qualified name, so the header undefines every object-like macro of
+tools/iso_c.toml after the includes: in the unit, `errno()` and `SIZE_MAX` are
+the mapped names on every target. A C header included later in the same unit
+is already included and defines nothing again.
+
+A unit that includes a C header itself, beside the module, has that header's
+macros active; it uses them as macros, or reads their values under other names
+and `#undef`s them before naming the mapped ones (tests/header_mix_test.cpp).
 
 ## The implementation
 

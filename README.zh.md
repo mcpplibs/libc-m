@@ -56,7 +56,7 @@ ISO C17 库摘要（附录 B）中目标所定义的每个对象宏：`<errno.h>
 `<locale.h>`、`<math.h>`、`<signal.h>`、`<stdint.h>`、`<stdio.h>`、`<stdlib.h>`、`<time.h>`、`<wchar.h>` 中共 334 个名字。
 目标未定义的宏（例如 `fma` 不快时的 `FP_FAST_FMA`）在该目标上不映射。ISO C 没有的 POSIX 名字（`ENOENT`、`EACCES` 等）
 不映射：`std::errc` 可移植地给出它们。`NULL` 即 `nullptr`。无法用函数替代的函数式宏保留在 `<mwrap/libc/macros.hpp>`，
-它包含定义这些宏的五个头文件；包含它的翻译单元中，这些头文件的对象宏（`SIZE_MAX` 等）处于激活状态，按宏使用
+它包含定义这些宏的五个头文件，随后取消定义 ISO C 的全部对象宏，使映射后的名字在该翻译单元中于每种 C 库上都可用
 （[docs/usage.md](docs/usage.md)）。
 
 ## 构建与测试

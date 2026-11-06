@@ -51,9 +51,10 @@ int main()
     std::fclose(f);
 
     // Limits and the environment.
-    // (Not c::SIZE_MAX here: <mwrap/libc/macros.hpp> includes <stdint.h>, whose SIZE_MAX
-    // macro would expand inside the qualified name.)
-    check(c::CHAR_BIT == 8 && c::INT_MAX == std::numeric_limits<int>::max() && c::LLONG_MIN < 0, "CHAR_BIT, INT_MAX, LLONG_MIN");
+    // <mwrap/libc/macros.hpp> undefines the object-like macros its headers bring, so the
+    // mapped names are usable in this unit on every C library.
+    check(c::CHAR_BIT == 8 && c::INT_MAX == std::numeric_limits<int>::max()
+              && c::SIZE_MAX == std::numeric_limits<std::size_t>::max(), "CHAR_BIT, INT_MAX, SIZE_MAX");
     check(c::MB_CUR_MAX() >= 1 && c::EXIT_SUCCESS == 0 && c::RAND_MAX >= 32767, "MB_CUR_MAX(), EXIT_SUCCESS, RAND_MAX");
     check(c::INFINITY() == std::numeric_limits<float>::infinity() && c::NAN() != c::NAN(), "INFINITY() and NAN()");
     check(std::setlocale(c::LC_ALL, "C") != nullptr, "setlocale(LC_ALL)");

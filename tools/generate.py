@@ -17,8 +17,10 @@ tools/surface.toml names the macros that are constants there and not on
 another target, which take the function form everywhere. The rendered files
 are the same on every host:
 
-  src/macros.cppm      the mapping
-  tests/macros.cpp     each mapping against its macro, where the target defines it
+  src/macros.cppm                  the mapping
+  tests/macros.cpp                 each mapping against its macro, where the target defines it
+  include/mwrap/libc/macros.hpp    the headers of the function-like macros, with every
+                                   object-like macro of the list undefined after them
 
 --check renders them in memory: on `generated-on` they must be byte-identical;
 on every host, each macro classified a constant must be one there.
@@ -26,6 +28,7 @@ on every host, each macro classified a constant must be one there.
 import argparse
 from pathlib import Path
 import sys
+import textwrap
 import tomllib
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -127,8 +130,25 @@ def render(iso, names, constants):
                   f'    check(same_result([]() -> decltype(auto) {{ return m::{n}(); }}, header::get_{n}), "{n}");',
                   '#endif']
     t += ['    std::println("{} macros mapped here, {} differ", mapped, differ);', '    return differ != 0;', '}']
+    fl = iso['function-like']
+    listed = 'in for: ' + ', '.join(f"{', '.join(v)} (<{k}>)" for k, v in fl.items()) + '.'
+    h = ['// <mwrap/libc/macros.hpp> --- the function-like macros of ISO C17 that no function can stand']
+    h += ['// ' + line for line in textwrap.wrap(listed, 86)]
+    h += ['// They take a type or a member name, act at the call site, or must be macros by the',
+          "// standard, so they stay macros, as the target's C library defines them: this header",
+          '// includes the headers that define them. Include it before `import mcpplibs.mwrap.libc;`.',
+          '//',
+          '// Those headers also define object-like macros, and which ones differs between C libraries',
+          "// (the Windows CRT's <stddef.h> defines errno; macOS's headers bring MB_CUR_MAX and NAN).",
+          "// Each object-like macro of ISO C is undefined after them, so that the unit names it as",
+          '// mcpplibs::mwrap::libc::macros does on every target. Written by tools/generate.py.',
+          '#ifndef MWRAP_LIBC_MACROS_HPP', '#define MWRAP_LIBC_MACROS_HPP', '']
+    h += [f'#include <{k}>' for k in fl]
+    h += ['']
+    h += [f'#undef {n}' for n in names]
+    h += ['', '#endif  // MWRAP_LIBC_MACROS_HPP']
     join = lambda lines: '\n'.join(lines) + '\n'
-    return {'src/macros.cppm': join(m), 'tests/macros.cpp': join(t)}
+    return {'src/macros.cppm': join(m), 'tests/macros.cpp': join(t), 'include/mwrap/libc/macros.hpp': join(h)}
 
 
 def main():
