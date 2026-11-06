@@ -1,0 +1,9 @@
+libc-m: C++ module wrapper
+Copyright (c) 2026 mcpp-community contributors
+
+The wrapper contributions are licensed under the Apache License, Version 2.0.
+The upstream is the ISO C standard (ISO/IEC 9899:2018), whose library summary
+names the macros this package maps; no text of the standard is included. The
+implementation is the target's C library, under its own license, and the
+function-like macros of include/mwrap/libc/macros.hpp are that library's own
+definitions, reached through its headers.

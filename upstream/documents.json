@@ -1,0 +1,6 @@
+{
+  "upstream": "ISO/IEC 9899:2018, Programming languages — C (C17), Annex B: the library summary",
+  "upstream_sha256": "",
+  "pruning": "Nothing is vendored and no upstream document is retained: the standard is not redistributable, and the implementation is the target's C library (glibc, musl, the Windows CRT, macOS libSystem, openkal-musl, mingw), selected by mcpp's target. tools/iso_c.toml lists the macro names of Annex B.",
+  "documents": []
+}

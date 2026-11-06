@@ -1,0 +1,9 @@
+# What tools/generate.py cannot read on `generated-on`; the rest it can.
+generated-on = "linux"
+
+# Constants with glibc, not with every C library this package targets: the
+# Windows CRT spells INFINITY and NAN as overflowing arithmetic and HUGE_VAL as
+# a variable; macOS computes math_errhandling at run time; FLT_EVAL_METHOD and
+# FLT_ROUNDS follow the floating-point environment. They take the function
+# form everywhere: a constexpr function, constant where the target allows.
+function = ["HUGE_VAL", "HUGE_VALF", "HUGE_VALL", "INFINITY", "NAN", "math_errhandling", "FLT_EVAL_METHOD", "FLT_ROUNDS"]
