@@ -29,7 +29,7 @@ version 17.0.0 names the standard (ISO/IEC 9899:2018, which C++23 references).
 ## Getting started
 
 ```sh
-mcpp new stdio --template mcpplibs.mwrap.libc@17.0.0
+mcpp new stdio --template mcpplibs.mwrap.libc@17.0.0.1
 cd stdio
 mcpp run
 ```
@@ -39,7 +39,7 @@ The default template opens a file with C stdio, reports the C library's
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.libc" = "17.0.0"
+mcpplibs.mwrap.libc = "17.0.0.1"
 ```
 
 ```cpp

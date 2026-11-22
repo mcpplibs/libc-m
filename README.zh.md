@@ -25,7 +25,7 @@
 ## 快速开始
 
 ```sh
-mcpp new stdio --template mcpplibs.mwrap.libc@17.0.0
+mcpp new stdio --template mcpplibs.mwrap.libc@17.0.0.1
 cd stdio
 mcpp run
 ```
@@ -34,7 +34,7 @@ mcpp run
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.libc" = "17.0.0"
+mcpplibs.mwrap.libc = "17.0.0.1"
 ```
 
 ```cpp

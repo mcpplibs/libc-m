@@ -3,7 +3,7 @@
 [package]
 namespace   = "mcpplibs.mwrap"
 name        = "libc"
-version     = "17.0.0"
+version     = "17.0.0.1"
 description = "The C standard library (ISO C17) as C++ modules for mcpp (import mcpplibs.mwrap.libc;): std.compat with the object-like macros of ISO C (stdout, errno, EOF, BUFSIZ, INT_MAX …) as C++ constants and functions, over the target's C library"
 license     = "Apache-2.0"
 authors     = ["mcpp-community"]
